@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" id="htmlRoot" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="webkit" name="renderer" />
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0"
+        name="viewport" />
+    <title>EASY CALCULATOR</title>
+    <style>
+        html,
+        body,
+        #app {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            max-width: 1400px;
+            min-width: 600px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .app_title {
+            font-size: 40px;
+            padding: 50px 0 100px;
+            font-weight: bold;
+        }
+
+        .app_header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .app_header_item {
+            width: 25%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #777777;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all .5s ease-in-out;
+
+        }
+
+        .app_header_item:hover {
+            transition: all .3s ease-in-out;
+            font-weight: bold;
+            font-size: 20px;
+            color: #333333;
+        }
+
+        .app_header_item_active {
+            color: #000000;
+            font-weight: bold;
+            font-size: 20px;
+            transition: all .5s ease-in-out;
+        }
+
+        .app_content {
+            background-color: #fafafa;
+            padding-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+
+        .app_content_item {
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            display: none;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .content_child {
+            width: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .acvice {
+            display: flex;
+        }
+
+        .form_item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .form {
+            margin: 20px;
+            position: relative;
+            overflow: hidden;
+
+        }
+
+        .form_item_label {
+            height: 50px;
+            line-height: 50px;
+            flex-shrink: 0;
+            width: 180px;
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .form_item_value {
+            margin-left: 10px;
+            height: 50px;
+            line-height: 50px;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            border: 1px solid #d8d8d8;
+            border-radius: 5px;
+        }
+
+        .form_item_left_ico {
+            height: 50px;
+            line-height: 50px;
+            flex-shrink: 0;
+            width: 50px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            background: #d8d8d8;
+        }
+
+        .form_item_left_ico2 {
+            height: 50px;
+            line-height: 50px;
+            flex-shrink: 0;
+            width: 200px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            background: #d8d8d8;
+        }
+
+        .form_item_input {
+            flex: 1;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .form_item_input input {
+            height: 50px;
+            width: 100%;
+            border: 0;
+            outline: 0;
+            color: #000000;
+            padding-left: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .form_item_right_ico {
+            height: 50px;
+            line-height: 50px;
+            flex-shrink: 0;
+            width: 50px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            background: #d8d8d8;
+        }
+
+        .cover {
+            cursor: pointer;
+        }
+
+        .h2 {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .add_btn {
+            background: #2196f3;
+            cursor: pointer;
+            height: 50px;
+            width: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            font-size: 18px;
+            overflow: hidden;
+            border-radius: 5px;
+            float: right;
+            margin-left: 15px;
+        }
+
+
+        .action_content {
+            padding: 0px 0 20px 20px;
+        }
+
+        .result {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            padding-top: 100px;
+        }
+
+        .result_title {
+            font-size: 20px;
+            height: 50px;
+            font-weight: bold;
+            color: #999999;
+        }
+
+        .result_value {
+            font-size: 60px;
+            font-weight: bold;
+            padding: 20px 0 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="app_title">EASY CALCULATOR</div>
+        <div class="app_header">
+            <div onclick="handleTabClick(0)" class="app_header_item app_header_item_active">
+                NET Present Value(NPV)
+            </div>
+            <div onclick="handleTabClick(1)" class="app_header_item">
+                Return on Investment
+            </div>
+            <div onclick="handleTabClick(2)" class="app_header_item">
+                Payback Period
+            </div>
+            <div onclick="handleTabClick(3)" class="app_header_item">
+                Break-Even Point
+            </div>
+        </div>
+        <div class="app_content">
+            <!-- Tab One - NPV -->
+            <div class="app_content_item acvice">
+                <div class="content_child left">
+                    <div class="form">
+                        <form action="#" method="get" id="fm1" name="frm1">
+                            <div class="form_item">
+                                <div class="form_item_label">Initial Investment</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_left_ico">$</div>
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Initial_Investment_one" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_item">
+                                <div class="form_item_label">Discount Rate</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Discount_Rate_one" value="" />
+                                    </div>
+                                    <div class="form_item_right_ico">%</div>
+                                </div>
+                            </div>
+                            <div class="h2">Cash Flow</div>
+                            <div class="action_content" id="action_content_one">
+                                <div class="form_item l_one">
+                                    <div class="form_item_value">
+                                        <div class="form_item_left_ico2">Year 1:$</div>
+                                        <div class="form_item_input">
+                                            <input type="text" class="one_years" value="" />
+                                        </div>
+                                        <div class="form_item_right_ico cover">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div onclick="getResult_one()" class="add_btn">Calulate</div>
+                            <div onclick="addOne()" class="add_btn">+ Add Year</div>
+                        </form>
+                    </div>
+                </div>
+                <div class="content_child right">
+                    <div class="result">
+                        <div class="result_title">Result</div>
+                        <div class="result_value" id="result_one"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Two - ROI -->
+            <div class="app_content_item">
+                <div class="content_child left">
+                    <div class="form">
+                        <form action="#" method="get" id="fm2" name="frm2">
+                            <div class="form_item">
+                                <div class="form_item_label">Amount Invested</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_left_ico">$</div>
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Amount_Invested" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_item">
+                                <div class="form_item_label">Amount Returned</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_left_ico">$</div>
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Amount_Returned" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div onclick="getResult_two()" class="add_btn">Calculate</div>
+                        </form>
+                    </div>
+                </div>
+                <div class="content_child right">
+                    <div class="result">
+                        <div class="result_title">Result</div>
+                        <div class="result_value" id="result_two"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Three - Payback Period -->
+            <div class="app_content_item">
+                <div class="content_child left">
+                    <div class="form">
+                        <form action="#" method="get" id="fm3" name="frm3">
+                            <div class="form_item">
+                                <div class="form_item_label">Initial Investment</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_left_ico">$</div>
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Initial_Investment_three" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Unneeded Code Begin
+                            <div class="form_item">
+                                <div class="form_item_label">Discount Rate</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Discount_Rate_three" value="" />
+                                    </div>
+                                    <div class="form_item_right_ico">%</div>
+                                </div>
+                            </div>
+                            Unneeded Code End -->
+                            <div class="h2">Cash Flow</div>
+                            <div class="action_content" id="action_content_three">
+                                <div class="form_item l_three">
+                                    <div class="form_item_value">
+                                        <div class="form_item_left_ico2">Year 1:$</div>
+                                        <div class="form_item_input">
+                                            <input type="text" class="three_years" value="" />
+                                        </div>
+                                        <div class="form_item_right_ico cover">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div onclick="getResult_three()" class="add_btn">Calulate</div>
+                            <div onclick="addThree()" class="add_btn">+ Add Year</div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="content_child right">
+                    <div class="result">
+                        <div class="result_title">Result</div>
+                        <div class="result_value" id="result_three"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Four - Break-Even Point -->
+            <div class="app_content_item">
+                <div class="content_child left">
+                    <div class="form">
+                        <form action="#" method="get" id="fm4" name="frm4">
+                            <div class="form_item">
+                                <div class="form_item_label">Fixed Costs</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_left_ico">$</div>
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Fixed_Costs" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_item">
+                                <div class="form_item_label">Variable Cost Per Unit</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_left_ico">$</div>
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Variable_Cost_Per_Unit" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_item">
+                                <div class="form_item_label">Selling Price Per Unit</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_left_ico">$</div>
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Selling_Price_Per_Unit" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Unneeded Code Begin
+                            <div class="form_item">
+                                <div class="form_item_label">Expected Unit Sales</div>
+                                <div class="form_item_value">
+                                    <div class="form_item_left_ico">$</div>
+                                    <div class="form_item_input">
+                                        <input type="text" class="v_Expected_Unit_Sales" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            Unneeded Code End -->
+                            <div onclick="getResult_four()" class="add_btn">Calulate</div>
+                        </form>
+                    </div>
+                </div>
+                <div class="content_child right">
+                    <div class="result">
+                        <div class="result_title">Result</div>
+                        <div class="result_value" id="result_four"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Event Script
+
+        //listen input change
+        function inputChange() {
+            // get all input elements
+            const inputs = document.querySelectorAll('input');
+
+            // add event listener to all input elements
+            inputs.forEach(input => {
+                input.addEventListener('input', e => {
+                    const value = e.target.value;
+                    // The limit is that only numbers can be entered, and the decimal point cannot exceed 4 digits
+                    e.target.value = value.replace(/^\D*(\d*(?:\.\d{0,4})?).*$/g, '$1');
+                });
+            });
+
+            // get all delete button
+            const delBtns = document.querySelectorAll('.cover');
+
+            // add event listener to all delete butoon
+            delBtns.forEach(delBtn => {
+                delBtn.addEventListener('click', e => {
+                    // remve current input row
+                    e.target.parentNode.parentNode.remove();
+                });
+            });
+        }
+        inputChange();
+
+        //switch Tab
+        function handleTabClick(e) {
+            var x = document.getElementsByClassName("app_header_item");
+            for (var i = 0; i < x.length; i++) {
+                document.getElementsByClassName("app_header_item")[i].className =
+                    i == e
+                        ? "app_header_item app_header_item_active"
+                        : "app_header_item";
+
+                document.getElementsByClassName("app_content_item")[i].className =
+                    i == e ? "app_content_item acvice" : "app_content_item";
+            }
+        }
+
+        //add new input
+        function addMoreInput(tab_no) {
+            const n = document.getElementsByClassName('l_' + tab_no).length + 1;
+            const element_form_item = document.createElement('div');
+            element_form_item.setAttribute('class', 'form_item l_' + tab_no);
+            const form_item_value = document.createElement('div');
+            form_item_value.setAttribute('class', 'form_item_value');
+            const form_item_left_ico2 = document.createElement('div');
+            form_item_left_ico2.setAttribute('class', 'form_item_left_ico2');
+            form_item_left_ico2.innerText = 'Year ' + n + ':$'
+            const form_item_input = document.createElement('div');
+            form_item_input.setAttribute('class', 'form_item_input');
+            const form_item_input_inner = document.createElement('input');
+            form_item_input_inner.setAttribute('class', tab_no + '_years');
+            form_item_input.appendChild(form_item_input_inner)
+            const form_item_right_ico = document.createElement('div');
+            form_item_right_ico.setAttribute('class', 'form_item_right_ico cover');
+            form_item_right_ico.innerText = '-';
+            form_item_value.appendChild(form_item_left_ico2);
+            form_item_value.appendChild(form_item_input);
+            form_item_value.appendChild(form_item_right_ico);
+            element_form_item.appendChild(form_item_value);
+            document.getElementById('action_content_' + tab_no).appendChild(element_form_item);
+            inputChange();
+        }
+
+        //add new input for Tab three
+        function addOne() {
+            addMoreInput('one');
+        }
+
+        //add new input for Tab three
+        function addThree() {
+            addMoreInput('three');
+        }
+    </script>
+    <script>
+        //calc functions
+
+        //calc NPV
+        function getResult_one() {
+
+            //Initial Inverstment
+            const v_Initial_Investment = parseFloat(document.getElementsByClassName('v_Initial_Investment_one')[0].value) || 0.0;
+
+            //Discount Rate
+            const v_Discount_Rate = (parseFloat(document.getElementsByClassName('v_Discount_Rate_one')[0].value) || 0.0) / 100;
+
+            // get all cash flow inputs
+            const o_one_years = document.getElementsByClassName('one_years');
+
+            //calc NPV
+            let v_NPV = 0;
+            let discountFactor = 1;
+            for (let i = 0; i < o_one_years.length; i++) {
+                let cf = parseFloat(o_one_years[i].value) || 0.0;
+                let presentValue = cf / discountFactor;
+                v_NPV += presentValue;
+                discountFactor *= 1 - v_Discount_Rate;
+            }
+            v_NPV = (v_NPV - v_Initial_Investment).toFixed(2);
+
+            //show the result
+            document.getElementById('result_one').innerText = '' + v_NPV;
+
+        }
+        //calc ROI
+        function getResult_two() {
+            //Amount Invested
+            const v_Amount_Invested = parseFloat(document.getElementsByClassName('v_Amount_Invested')[0].value) || 0.0;
+
+            //Amount Returned
+            const v_Amount_Returned = parseFloat(document.getElementsByClassName('v_Amount_Returned')[0].value) || 0.0;
+
+            // calc ROI
+            const v_ROI = (((v_Amount_Returned - v_Amount_Invested) / v_Amount_Invested) * 100).toFixed(2);
+
+            // show the result
+            document.getElementById('result_two').innerText = v_ROI + '%';
+        }
+
+        //calc Payback Period
+        function getResult_three() {
+            //Initial Inverstment
+            const v_Initial_Investment = parseFloat(document.getElementsByClassName('v_Initial_Investment_three')[0].value) || 0.0;
+
+            //Discount Rate  Unneeded Code
+            //const v_Discount_Rate = (parseFloat(document.getElementsByClassName('v_Discount_Rate_three')[0].value) || 0.0) / 100;
+
+
+            // get all cash flow inputs
+            const o_three_years = document.getElementsByClassName('three_years');
+
+            //calc Average Annual Cash flow
+            let v_Total_Cash_Flow = 0.0;
+            for (let i = 0; i < o_three_years.length; i++) {
+                let c = parseFloat(o_three_years[i].value) || 0.0;
+                v_Total_Cash_Flow += c;
+            }
+            debugger;
+            const v_Average_Annual_Cash_Flow = v_Total_Cash_Flow / o_three_years.length;
+
+            const v_Payback_Period = (v_Initial_Investment / v_Average_Annual_Cash_Flow).toFixed(4)
+            // show the result
+            document.getElementById('result_three').innerText = '' + v_Payback_Period;
+        }
+
+        //calc Break-Even Point
+        function getResult_four() {
+            //Fixed Costs
+            const v_Fixed_Costs = parseFloat(document.getElementsByClassName('v_Fixed_Costs')[0].value) || 0.0;
+
+            //Variable Cost Per Unit
+            const v_Variable_Cost_Per_Unit = parseFloat(document.getElementsByClassName('v_Variable_Cost_Per_Unit')[0].value) || 0.0;
+
+            //Selling Price Per Unit
+            const v_Selling_Price_Per_Unit = parseFloat(document.getElementsByClassName('v_Selling_Price_Per_Unit')[0].value) || 0.0;
+
+            //Expected Unit Sales   Unneeded Code
+            //const v_Expected_Unit_Sales = parseFloat(document.getElementsByClassName('v_Expected_Unit_Sales')[0].value) || 0.0;
+
+            //calc Break-Even Point
+            const v_BreakEven_Point = parseInt(v_Fixed_Costs / (v_Selling_Price_Per_Unit - v_Variable_Cost_Per_Unit));
+
+            // show the result
+            document.getElementById('result_four').innerText = '' + v_BreakEven_Point;
+        }
+
+    </script>
+</body>
+
+</html>
