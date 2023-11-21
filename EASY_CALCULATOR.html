@@ -537,12 +537,11 @@
 
             //calc NPV
             let v_NPV = 0;
-            let discountFactor = 1;
+            let discountFactor = 1 + v_Discount_Rate;
             for (let i = 0; i < o_one_years.length; i++) {
                 let cf = parseFloat(o_one_years[i].value) || 0.0;
-                let presentValue = cf / discountFactor;
+                let presentValue = cf / Math.pow(discountFactor, i + 1);
                 v_NPV += presentValue;
-                discountFactor *= 1 - v_Discount_Rate;
             }
             v_NPV = (v_NPV - v_Initial_Investment).toFixed(2);
 
